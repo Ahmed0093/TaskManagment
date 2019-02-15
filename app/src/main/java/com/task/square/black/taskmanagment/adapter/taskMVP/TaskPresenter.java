@@ -6,9 +6,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.DB.localdb.TaskLocalDataSource;
-import com.task.square.black.taskmanagment.DB.localdb.TaskRemoteFireBaseDataBase;
 import com.task.square.black.taskmanagment.DB.localdb.TasksDataSource;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TaskPresenter implements TasksContract.Presenter {
@@ -29,7 +30,8 @@ public class TaskPresenter implements TasksContract.Presenter {
 
 
     @Override
-    public void loadTasks(boolean forceUpdate) {
+    public void loadTasks() {
+        ShowTaskInView();
     }
 
     @Override
@@ -94,5 +96,37 @@ public class TaskPresenter implements TasksContract.Presenter {
         }
         taskLocalDataSource.updateTask(taskClicked);
         ShowTaskInView();
+    }
+
+    @Override
+    public void navigateToTaskView(Task taskCLicked) {
+        mTasksView.OpenTaskViewDetailsWithCommentList(taskCLicked);
+    }
+
+    @Override
+    public void updateTaskinDatabase(Task taskClicked) {
+        taskLocalDataSource.updateTask(taskClicked);
+        ShowTaskInView();
+    }
+
+    @Override
+    public void filterDoneTasksOnly() {
+        taskLocalDataSource.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                List<Task> result = new ArrayList<>();
+                for (Task task : tasks) {
+                    if (task.isIscompleted()) {
+                        result.add(task);
+                    }
+                }
+                mTasksView.showTasks(result);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksView.showNoTasks();
+            }
+        });
     }
 }

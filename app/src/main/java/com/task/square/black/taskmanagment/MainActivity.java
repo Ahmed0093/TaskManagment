@@ -18,18 +18,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+//    private RecyclerView recyclerView;
     private Button buttonAddTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        saveTask();
-        recyclerView = findViewById(R.id.recyclerview_tasks);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        saveTask();
+//        recyclerView = findViewById(R.id.recyclerview_tasks);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        buttonAddTask = findViewById(R.id.floating_button_add);
+        buttonAddTask = findViewById(R.id.login_button_add);
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

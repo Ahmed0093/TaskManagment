@@ -42,13 +42,15 @@ public interface TasksContract {
         boolean isActive();
 
         void showFilteringPopUpMenu();
+
+        void OpenTaskViewDetailsWithCommentList(Task taskCLicked);
     }
 
     interface Presenter  {
 
 //        void result(int requestCode, int resultCode);
 
-        void loadTasks(boolean forceUpdate);
+        void loadTasks();
 
         void addNewTask();
         void addTasktoDp(Task task);
@@ -61,6 +63,12 @@ public interface TasksContract {
         void changeTaskStatus(Task taskCLicked);
 
         void updateAdapterUI(Task taskClicked);
+
+        void navigateToTaskView(Task taskCLicked);
+
+        void updateTaskinDatabase(Task taskClicked);
+
+        void filterDoneTasksOnly();
 //
 //        void completeTask(@NonNull Task completedTask);
 //

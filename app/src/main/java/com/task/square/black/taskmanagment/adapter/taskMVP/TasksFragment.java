@@ -1,14 +1,20 @@
 package com.task.square.black.taskmanagment.adapter.taskMVP;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.R;
@@ -21,6 +27,8 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     private TasksContract.Presenter mPresenter;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
+    private SearchView searchView;
+
     public TasksFragment() {
         // Requires empty public constructor
     }
@@ -133,16 +141,46 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     }
 
     @Override
-    public void onItemClick(Task taskCLicked) {
-        if(taskCLicked.isLongClickedPressed()) {
-            mPresenter.deleteTask(taskCLicked);
+    public void OpenTaskViewDetailsWithCommentList(Task taskCLicked) {
+        //TODO NAVIGATE TO TASK WITH COMMENT VIEW..
+        Toast.makeText(getContext(), "titleClicked", Toast.LENGTH_LONG).show();
 
-        }
+    }
+
+    @Override
+    public void onItemClick(Task taskCLicked) {
+//        if(taskCLicked.isLongClickedPressed()) {
+//            mPresenter.deleteTask(taskCLicked);
+//
+//        }
+//        mPresenter.changeTaskStatus(taskCLicked);
+ }
+
+    @Override
+    public void onStatusClicked(Task taskCLicked) {
         mPresenter.changeTaskStatus(taskCLicked);
+    }
+
+
+    @Override
+    public void onTitleClicked(Task taskCLicked) {
+        mPresenter.navigateToTaskView(taskCLicked);
     }
 
     @Override
     public void onLongClickPresed(Task taskClicked) {
         mPresenter.updateAdapterUI(taskClicked);
     }
+
+    @Override
+    public void onDeleteTask(Task taskClicked) {
+        mPresenter.deleteTask(taskClicked);
+    }
+
+    @Override
+    public void updateDatabase(Task taskClicked) {
+        mPresenter.updateTaskinDatabase(taskClicked);
+    }
+
+
 }
