@@ -22,21 +22,38 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
 
     private Context mCtx;
 
-    public List<Task> getTaskList() {
-        return taskList;
+    public boolean isFilteredList() {
+        return isFilteredList;
+    }
+
+    public void setFilteredList(boolean filteredList) {
+        isFilteredList = filteredList;
+    }
+
+    private boolean isFilteredList = false;
+
+    public List<Task> getTaskListitems() {
+        return taskListitems;
     }
 
     public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
+        this.taskListitems = taskList;
     }
 
-    private List<Task> taskList;
+    public void setFilteredTaskList(List<Task> filteredTaskList) {
+        this.filteredTaskList = filteredTaskList;
+    }
+
+    private List<Task> taskListitems;
+    private List<Task> filteredTaskList;
+
     private AdapterClickListener adapteritemCLickListener;
     private Resources resources;
 
-    public TaskAdapter(Context mCtx, List<Task> taskList, AdapterClickListener adapteritemCLickListener, Resources resources) {
+    public TaskAdapter(Context mCtx, List<Task> taskList, List<Task> filteredTaskList, AdapterClickListener adapteritemCLickListener, Resources resources) {
         this.mCtx = mCtx;
-        this.taskList = taskList;
+        this.taskListitems = taskList;
+        this.filteredTaskList = filteredTaskList;
         this.adapteritemCLickListener = adapteritemCLickListener;
         this.resources = resources;
     }
@@ -50,7 +67,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
     @SuppressLint({"ResourceAsColor", "RestrictedApi"})
     @Override
     public void onBindViewHolder(TasksViewHolder holder, int position) {
-        Task t = taskList.get(position);
+        Task t;
+        if (!isFilteredList) {
+            t = taskListitems.get(position);
+        } else {
+            t = filteredTaskList.get(position);
+        }
         holder.textViewTask.setText(t.getTask());
         holder.textViewDesc.setText(t.getDesc());
 
@@ -104,7 +126,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
 
     @Override
     public int getItemCount() {
-        return taskList.size();
+        if (!isFilteredList) {
+            return taskListitems.size();
+        } else {
+            return filteredTaskList.size();
+        }
     }
 
     public void setUpdatedTaskList(List<Task> tasks, int adapterPosition) {
@@ -133,18 +159,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
             imageViewdDeletek = itemView.findViewById(R.id.deleteimage);
 
             prioritylayout = itemView.findViewById(R.id.prioritylayout);
-            tasklayoutView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Task taskClicked = taskList.get(getAdapterPosition());
-                    adapteritemCLickListener.onLongClickPresed(taskClicked, getAdapterPosition());
-                    return false;
-                }
-            });
+            initViewsClickListeners();
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        private void initViewsClickListeners() {
             imageViewdDeletek.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Task taskClicked = taskList.get(getAdapterPosition());
+                    Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                     if (taskClicked.isLongClickedPressed()) {
                         adapteritemCLickListener.onDeleteTask(taskClicked, getAdapterPosition());
                     }
@@ -160,14 +184,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
                     if (button.isSelected()) {
                         imageViewPriority2.setSelected(false);
                         imageViewPriority3.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("1"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     } else {
                         //Handle de-select state change
                         imageViewPriority2.setSelected(false);
                         imageViewPriority3.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("0"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     }
@@ -183,14 +207,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
                     if (button.isSelected()) {
                         imageViewPriority1.setSelected(false);
                         imageViewPriority3.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("2"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     } else {
                         //Handle de-select state change
                         imageViewPriority1.setSelected(false);
                         imageViewPriority3.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("0"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     }
@@ -206,14 +230,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
                     if (button.isSelected()) {
                         imageViewPriority1.setSelected(false);
                         imageViewPriority2.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("3"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     } else {
                         //Handle de-select state change
                         imageViewPriority1.setSelected(false);
                         imageViewPriority2.setSelected(false);
-                        Task taskClicked = taskList.get(getAdapterPosition());
+                        Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                         taskClicked.setPriority("0"); //Handle selected state change
                         adapteritemCLickListener.updateDatabase(taskClicked, getAdapterPosition());
                     }
@@ -224,7 +248,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
                 @Override
                 public void onClick(View button) {
                     button.setSelected(!button.isSelected());
-                    Task taskClicked = taskList.get(getAdapterPosition());
+                    Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
 
                     if (button.isSelected()) {
                         taskClicked.setIscompleted(true);
@@ -242,13 +266,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
             textViewTask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Task taskClicked = taskList.get(getAdapterPosition());
+                    Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
                     adapteritemCLickListener.onTitleClicked(taskClicked);
 
                 }
             });
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -258,9 +280,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksViewHolde
 
         @Override
         public boolean onLongClick(View view) {
-            Task taskClicked = taskList.get(getAdapterPosition());
+            Task taskClicked = getTaskClickedWIthPosition(getAdapterPosition());
             adapteritemCLickListener.onLongClickPresed(taskClicked, getAdapterPosition());
             return false;
+        }
+
+
+        private Task getTaskClickedWIthPosition(int position) {
+            Task taskClicked;
+            if (!isFilteredList) {
+                taskClicked = taskListitems.get(position);
+            } else {
+                taskClicked = filteredTaskList.get(position);
+            }
+            return taskClicked;
         }
     }
 }

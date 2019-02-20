@@ -58,7 +58,7 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new TaskAdapter(getContext(), new ArrayList<Task>(), this, getResources());
+        adapter = new TaskAdapter(getContext(), new ArrayList<Task>(), new ArrayList<Task>(), this, getResources());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setAutoMeasureEnabled(false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -76,6 +76,7 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
 
     @Override
     public void showTasks(List<Task> tasks) {
+        adapter.setFilteredList(false);
         adapter.setTaskList(tasks);
         adapter.notifyDataSetChanged();
     }
@@ -167,7 +168,13 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
 
     @Override
     public void showTasksWhenItemDeletedWithPosition(List<Task> tasks, int adapterPosition) {
-       adapter.setUpdatedTaskList(tasks,adapterPosition);
+        if (adapter.isFilteredList()) {
+            mPresenter.filterDoneTasksOnly();
+        } else {
+            adapter.setTaskList(tasks);
+            adapter.notifyItemRemoved(adapterPosition);
+
+        }
     }
 
     @Override
@@ -183,12 +190,15 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     }
 
     @Override
+    public void showFilteredDoneTasks(List<Task> result) {
+        adapter.setFilteredTaskList(result);
+        adapter.setFilteredList(true);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onItemClick(Task taskCLicked) {
-//        if(taskCLicked.isLongClickedPressed()) {
-//            mPresenter.deleteTask(taskCLicked);
-//
-//        }
-//        mPresenter.changeTaskStatus(taskCLicked);
+    //No implementaton required
  }
 
     @Override

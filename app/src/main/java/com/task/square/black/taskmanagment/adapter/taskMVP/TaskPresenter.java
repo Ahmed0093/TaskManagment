@@ -183,7 +183,7 @@ public class TaskPresenter implements TasksContract.Presenter {
                         result.add(task);
                     }
                 }
-                mTasksView.showTasks(result);
+                mTasksView.showFilteredDoneTasks(result);
             }
 
             @Override

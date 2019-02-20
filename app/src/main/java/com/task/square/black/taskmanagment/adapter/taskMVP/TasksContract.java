@@ -50,6 +50,8 @@ public interface TasksContract {
         void notifyTaskInserted(List<Task> tasks);
 
         void updateTaskItem(List<Task> tasks, int adapterPosition);
+
+        void showFilteredDoneTasks(List<Task> result);
     }
 
     interface Presenter  {
