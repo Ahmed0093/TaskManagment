@@ -44,6 +44,12 @@ public interface TasksContract {
         void showFilteringPopUpMenu();
 
         void OpenTaskViewDetailsWithCommentList(Task taskCLicked);
+
+        void showTasksWhenItemDeletedWithPosition(List<Task> tasks, int adapterPosition);
+
+        void notifyTaskInserted(List<Task> tasks);
+
+        void updateTaskItem(List<Task> tasks, int adapterPosition);
     }
 
     interface Presenter  {
@@ -54,19 +60,20 @@ public interface TasksContract {
 
         void addNewTask();
         void addTasktoDp(Task task);
+        List<Task> getTasks();
 
 
         void openTaskDetails(@NonNull Task requestedTask);
 
-        void deleteTask(Task taskClicked);
+        void deleteTask(Task taskClicked, int adapterPosition);
 
-        void changeTaskStatus(Task taskCLicked);
+        void changeTaskStatus(Task taskCLicked, int adapterPosition);
 
-        void updateAdapterUI(Task taskClicked);
+        void updateAdapterUI(Task taskClicked, int adapterPosition);
 
         void navigateToTaskView(Task taskCLicked);
 
-        void updateTaskinDatabase(Task taskClicked);
+        void updateTaskinDatabase(Task taskClicked, int adapterPosition);
 
         void filterDoneTasksOnly();
 //

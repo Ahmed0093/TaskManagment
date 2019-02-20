@@ -1,17 +1,13 @@
 package com.task.square.black.taskmanagment.adapter.taskMVP;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,14 +16,16 @@ import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.R;
 import com.task.square.black.taskmanagment.adapter.AdapterClickListener;
 import com.task.square.black.taskmanagment.adapter.TaskAdapter;
+import com.task.square.black.taskmanagment.adapter.taskMVP.taskDetailsMVP.TaskDetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TasksFragment extends Fragment implements TasksContract.View,AdapterClickListener {
+    private static final String TASK_TAG = "task_tag";
     private TasksContract.Presenter mPresenter;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
-    private SearchView searchView;
 
     public TasksFragment() {
         // Requires empty public constructor
@@ -58,11 +56,28 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     }
 
     @Override
-    public void showTasks(List<Task> tasks) {
-         adapter = new TaskAdapter(getContext(), tasks, this, getResources());
-                recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adapter = new TaskAdapter(getContext(), new ArrayList<Task>(), this, getResources());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setAutoMeasureEnabled(false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            mPresenter.loadTasks();
+        }
+    }
+
+    @Override
+    public void showTasks(List<Task> tasks) {
+        adapter.setTaskList(tasks);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -143,8 +158,28 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     @Override
     public void OpenTaskViewDetailsWithCommentList(Task taskCLicked) {
         //TODO NAVIGATE TO TASK WITH COMMENT VIEW..
+        Intent intent = new Intent(getActivity(),TaskDetailsActivity.class);
+        intent.putExtra(TASK_TAG,taskCLicked);
+        startActivity(intent);
         Toast.makeText(getContext(), "titleClicked", Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void showTasksWhenItemDeletedWithPosition(List<Task> tasks, int adapterPosition) {
+       adapter.setUpdatedTaskList(tasks,adapterPosition);
+    }
+
+    @Override
+    public void notifyTaskInserted(List<Task> tasks) {
+        adapter.setTaskList(tasks);
+        adapter.notifyItemInserted(adapter.getItemCount());
+    }
+
+    @Override
+    public void updateTaskItem(List<Task> tasks, int adapterPosition) {
+        adapter.setTaskList(tasks);
+        adapter.notifyItemChanged(adapterPosition);
     }
 
     @Override
@@ -157,8 +192,8 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
  }
 
     @Override
-    public void onStatusClicked(Task taskCLicked) {
-        mPresenter.changeTaskStatus(taskCLicked);
+    public void onStatusClicked(Task taskCLicked, int adapterPosition) {
+        mPresenter.changeTaskStatus(taskCLicked,adapterPosition);
     }
 
 
@@ -168,18 +203,18 @@ public class TasksFragment extends Fragment implements TasksContract.View,Adapte
     }
 
     @Override
-    public void onLongClickPresed(Task taskClicked) {
-        mPresenter.updateAdapterUI(taskClicked);
+    public void onLongClickPresed(Task taskClicked, int adapterPosition) {
+        mPresenter.updateAdapterUI(taskClicked,adapterPosition);
     }
 
     @Override
-    public void onDeleteTask(Task taskClicked) {
-        mPresenter.deleteTask(taskClicked);
+    public void onDeleteTask(Task taskClicked, int adapterPosition) {
+        mPresenter.deleteTask(taskClicked,adapterPosition);
     }
 
     @Override
-    public void updateDatabase(Task taskClicked) {
-        mPresenter.updateTaskinDatabase(taskClicked);
+    public void updateDatabase(Task taskClicked, int adapterPosition) {
+        mPresenter.updateTaskinDatabase(taskClicked,adapterPosition);
     }
 
 

@@ -4,11 +4,11 @@ import com.task.square.black.taskmanagment.DB.Task;
 
 public interface AdapterClickListener {
     void onItemClick(Task taskCLicked);
-    void onStatusClicked(Task taskCLicked);
+    void onStatusClicked(Task taskCLicked, int adapterPosition);
     void onTitleClicked(Task taskCLicked);
-    void onLongClickPresed(Task taskClicked);
+    void onLongClickPresed(Task taskClicked, int adapterPosition);
 
-    void onDeleteTask(Task taskClicked);
+    void onDeleteTask(Task taskClicked, int adapterPosition);
 
-    void updateDatabase(Task taskClicked);
+    void updateDatabase(Task taskClicked, int adapterPosition);
 }

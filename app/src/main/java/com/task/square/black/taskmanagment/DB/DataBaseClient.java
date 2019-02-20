@@ -16,7 +16,9 @@ public class DataBaseClient {
 
         //creating the app database with Room database builder
         //MyTasks is the name of the database
-        appDatabase = Room.databaseBuilder(mCtx, AppDataBase.class, "MyTasks").build();
+        appDatabase = Room.databaseBuilder(mCtx, AppDataBase.class, "MyTasks")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     public static synchronized DataBaseClient getInstance(Context mCtx) {

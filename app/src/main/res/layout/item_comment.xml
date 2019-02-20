@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/tasksLL"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/comment_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="lorem ipsuu ajksl jalsdha ksjdghakssss ssddddddddddddd "
+        />
+    <TextView
+        android:id="@+id/comment_time_ago"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2 hours ago"
+        android:textColor="@color/black"
+        />
+</LinearLayout>

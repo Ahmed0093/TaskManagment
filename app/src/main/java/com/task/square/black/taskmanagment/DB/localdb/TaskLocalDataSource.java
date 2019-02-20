@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.widget.Toast;
 
+import com.task.square.black.taskmanagment.DB.Comment;
+import com.task.square.black.taskmanagment.DB.CommentDao;
 import com.task.square.black.taskmanagment.DB.DataBaseClient;
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.DB.TaskDao;
@@ -14,27 +16,29 @@ import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
-public class TaskLocalDataSource implements TasksDataSource {
+public class TaskLocalDataSource implements TasksDataSource ,CommentDataSource {
 
     private static volatile TaskLocalDataSource INSTANCE;
 
     private TaskDao mTasksDao;
+    private CommentDao mCommentDao;
 
     private Context mAppExecutors;
 
     // Prevent direct instantiation.
     private TaskLocalDataSource(@NonNull Context appExecutors,
-                                 @NonNull TaskDao tasksDao) {
+                                @NonNull TaskDao tasksDao, CommentDao mCommentDao) {
         mAppExecutors = appExecutors;
-        mTasksDao = tasksDao;
+        this.mTasksDao = tasksDao;
+        this.mCommentDao = mCommentDao;
     }
 
     public static TaskLocalDataSource getInstance(@NonNull Context appExecutors,
-                                                   @NonNull TaskDao tasksDao) {
+                                                   @NonNull TaskDao tasksDao,CommentDao commentDao) {
         if (INSTANCE == null) {
             synchronized (TaskLocalDataSource.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new TaskLocalDataSource(appExecutors, tasksDao);
+                    INSTANCE = new TaskLocalDataSource(appExecutors, tasksDao, commentDao);
                 }
             }
         }
@@ -151,7 +155,28 @@ public class TaskLocalDataSource implements TasksDataSource {
         UpdateTask st = new UpdateTask();
         st.execute();
     }
-
+//    @Override
+//    public void updateTaskToDone(@NonNull final Task task,i) {
+//        class UpdateTask extends AsyncTask<Void, Void, Void> {
+//
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                //adding to database
+//                DataBaseClient.getInstance(mAppExecutors).getAppDatabase()
+//                        .taskDao()
+//                        .update(task);
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//                Toast.makeText(mAppExecutors, "update"+task.getId(), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//        UpdateTask st = new UpdateTask();
+//        st.execute();
+//    }
     @Override
     public void completeTask(@NonNull String taskId) {
         // Not required for the local data source because the {@link TasksRepository} handles
@@ -243,5 +268,69 @@ public class TaskLocalDataSource implements TasksDataSource {
     @VisibleForTesting
     static void clearInstance() {
         INSTANCE = null;
+    }
+
+    @Override
+    public void getCommentsByTaskID(@NonNull LoadCommentsCallback callback) {
+
+    }
+
+    @Override
+    public void getCommentByTaskId(@NonNull final String taskId, @NonNull final GetCommentCallback callback) {
+        class GetComments extends AsyncTask<Void, Void, List<Comment>> {
+
+            @Override
+            protected List<Comment> doInBackground(Void... voids) {
+                List<Comment> comment = DataBaseClient
+                        .getInstance(mAppExecutors)
+                        .getAppDatabase()
+                        .commentDao()
+                        .getCommentsByTaskId(taskId);
+                return comment;
+            }
+
+            @Override
+            protected void onPostExecute(List<Comment> comments) {
+                super.onPostExecute(comments);
+                callback.onCommentsLoaded(comments);
+
+            }
+        }
+
+        GetComments gt = new GetComments();
+        gt.execute();
+    }
+
+    @Override
+    public void saveComment(@NonNull final Comment comment) {
+        class SaveComment extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                //adding to database
+                DataBaseClient.getInstance(mAppExecutors).getAppDatabase()
+                        .commentDao()
+                        .insert(comment);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Toast.makeText(mAppExecutors, "Saved comment", Toast.LENGTH_LONG).show();
+            }
+        }
+        SaveComment st = new SaveComment();
+        st.execute();
+    }
+
+    @Override
+    public void updateComment(@NonNull Comment comment) {
+
+    }
+
+    @Override
+    public void deleteCommentsForTaskId(@NonNull String taskId) {
+
     }
 }

@@ -9,7 +9,6 @@ import com.task.square.black.taskmanagment.DB.localdb.TaskLocalDataSource;
 import com.task.square.black.taskmanagment.DB.localdb.TasksDataSource;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class TaskPresenter implements TasksContract.Presenter {
@@ -18,6 +17,7 @@ public class TaskPresenter implements TasksContract.Presenter {
     private static volatile DatabaseReference INSTANCE;
 
     private boolean mFirstLoad = true;
+    private List<Task> taskListtoBeReturned;
 
     public TaskPresenter(TasksContract.View mTasksView, TaskLocalDataSource taskLocalDataSource) {
         this.mTasksView = mTasksView;
@@ -43,8 +43,28 @@ public class TaskPresenter implements TasksContract.Presenter {
     @Override
     public void addTasktoDp(Task task) {
         taskLocalDataSource.saveTask(task);
-        INSTANCE.child("users").child(String.valueOf(task.getId())).setValue(task); //TODO Complete FIRE BASE
+//        INSTANCE.child("users").child(String.valueOf(task.getId())).setValue(task); //TODO Complete FIRE BASE
         ShowTaskInView();
+    }
+
+    private void notifyTaskisAdded(Task task) {
+        taskLocalDataSource.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                mTasksView.notifyTaskInserted(tasks);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksView.showNoTasks();
+            }
+        });
+    }
+
+    @Override
+    public List<Task> getTasks() {
+
+        return getTaskFromDP() ;
     }
 
     @Override
@@ -53,9 +73,23 @@ public class TaskPresenter implements TasksContract.Presenter {
     }
 
     @Override
-    public void deleteTask(Task taskClicked) {
+    public void deleteTask(Task taskClicked, int adapterPosition) {
         taskLocalDataSource.deleteTask(String.valueOf(taskClicked.getId()));
-        ShowTaskInView();
+        updateListWithDeletedItem(adapterPosition);
+    }
+
+    private void updateListWithDeletedItem(final int adapterPosition) {
+        taskLocalDataSource.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                mTasksView.showTasksWhenItemDeletedWithPosition(tasks,adapterPosition);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksView.showNoTasks();
+            }
+        });
     }
 
     private void ShowTaskInView() {
@@ -71,22 +105,37 @@ public class TaskPresenter implements TasksContract.Presenter {
             }
         });
     }
+    private List<Task> getTaskFromDP() {
+        taskListtoBeReturned = new ArrayList<Task>();
+        taskLocalDataSource.getTasks(new TasksDataSource.LoadTasksCallback() {
 
-    @Override
-    public void changeTaskStatus(Task taskCLicked) {
-        if(taskCLicked.isIscompleted()) // Change Status
-        {
-            taskCLicked.setIscompleted(false);
-        } else {
-            taskCLicked.setIscompleted(true);
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+              taskListtoBeReturned= tasks;           }
 
-        }
-        taskLocalDataSource.updateTask(taskCLicked);
-        ShowTaskInView();
+            @Override
+            public void onDataNotAvailable() {
+                taskListtoBeReturned = new ArrayList<Task>();
+            }
+        });
+    return taskListtoBeReturned;
     }
 
     @Override
-    public void updateAdapterUI(Task taskClicked) {
+    public void changeTaskStatus(Task taskCLicked, int adapterPosition) {
+//        if(taskCLicked.isIscompleted()) // Change Status
+//        {
+//            taskCLicked.setIscompleted(false);
+//        } else {
+//            taskCLicked.setIscompleted(true);
+//
+//        }
+//        taskLocalDataSource.updateTask(taskCLicked);
+        updateListWithTaskitem(taskCLicked,adapterPosition);
+    }
+
+    @Override
+    public void updateAdapterUI(Task taskClicked, int adapterPosition) {
         if(taskClicked.isLongClickedPressed()) // Change Status
         {
             taskClicked.setLongClickedPressed(false);
@@ -95,7 +144,7 @@ public class TaskPresenter implements TasksContract.Presenter {
 
         }
         taskLocalDataSource.updateTask(taskClicked);
-        ShowTaskInView();
+        updateListWithTaskitem(taskClicked,adapterPosition);
     }
 
     @Override
@@ -104,9 +153,23 @@ public class TaskPresenter implements TasksContract.Presenter {
     }
 
     @Override
-    public void updateTaskinDatabase(Task taskClicked) {
+    public void updateTaskinDatabase(Task taskClicked, int adapterPosition) {
         taskLocalDataSource.updateTask(taskClicked);
-        ShowTaskInView();
+        updateListWithTaskitem(taskClicked, adapterPosition);
+    }
+
+    private void updateListWithTaskitem(Task taskCLicked, final int adapterPosition) {
+        taskLocalDataSource.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                mTasksView.updateTaskItem(tasks,adapterPosition);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksView.showNoTasks();
+            }
+        });
     }
 
     @Override

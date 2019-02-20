@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_task"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -26,6 +26,9 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
+        </activity>
+        <activity android:name=".adapter.taskMVP.taskDetailsMVP.TaskDetailsActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".TaskActivity"></meta-data>
         </activity>
     </application>
 
