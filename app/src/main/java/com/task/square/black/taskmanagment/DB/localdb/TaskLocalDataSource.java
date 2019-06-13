@@ -2,8 +2,8 @@ package com.task.square.black.taskmanagment.DB.localdb;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import android.widget.Toast;
 
 import com.task.square.black.taskmanagment.DB.Comment;
@@ -14,7 +14,7 @@ import com.task.square.black.taskmanagment.DB.TaskDao;
 
 import java.util.List;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 public class TaskLocalDataSource implements TasksDataSource ,CommentDataSource {
 

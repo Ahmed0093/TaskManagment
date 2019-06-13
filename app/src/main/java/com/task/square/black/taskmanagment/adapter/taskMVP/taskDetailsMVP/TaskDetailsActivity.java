@@ -2,19 +2,17 @@ package com.task.square.black.taskmanagment.adapter.taskMVP.taskDetailsMVP;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.TestLooperManager;
-import android.support.design.widget.CheckableImageButton;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+
+import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,13 +24,9 @@ import com.task.square.black.taskmanagment.DB.Comment;
 import com.task.square.black.taskmanagment.DB.DataBaseClient;
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.DB.localdb.TaskLocalDataSource;
-import com.task.square.black.taskmanagment.DB.localdb.TaskRemoteFireBaseDataBase;
 import com.task.square.black.taskmanagment.R;
-import com.task.square.black.taskmanagment.adapter.TaskAdapter;
 import com.task.square.black.taskmanagment.adapter.TaskDetailsAdapter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

@@ -99,21 +99,21 @@
             android:layout_height="40dp"
             android:weightSum="3">
 
-            <android.support.design.widget.CheckableImageButton
+            <com.google.android.material.internal.CheckableImageButton
                 android:id="@+id/priorityImage1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/priority1image" />
 
-            <android.support.design.widget.CheckableImageButton
+            <com.google.android.material.internal.CheckableImageButton
                 android:id="@+id/priorityImage2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/priority2image" />
 
-            <android.support.design.widget.CheckableImageButton
+            <com.google.android.material.internal.CheckableImageButton
                 android:id="@+id/priorityImage3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -149,13 +149,13 @@
             android:text="Comments"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/comments_title"
             android:id="@+id/recyclerview_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/comment_layout_edit_text2"
@@ -197,7 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             >
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add_task2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

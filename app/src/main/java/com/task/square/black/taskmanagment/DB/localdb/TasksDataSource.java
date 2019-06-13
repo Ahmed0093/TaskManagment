@@ -1,6 +1,6 @@
 package com.task.square.black.taskmanagment.DB.localdb;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.task.square.black.taskmanagment.DB.Task;
 

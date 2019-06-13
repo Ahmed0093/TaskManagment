@@ -1,6 +1,6 @@
 package com.task.square.black.taskmanagment.adapter.taskMVP;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

@@ -1,22 +1,15 @@
 package com.task.square.black.taskmanagment;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MotionEvent;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +19,6 @@ import android.widget.Toast;
 import com.task.square.black.taskmanagment.DB.DataBaseClient;
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.DB.localdb.TaskLocalDataSource;
-import com.task.square.black.taskmanagment.DB.localdb.TaskRemoteFireBaseDataBase;
 import com.task.square.black.taskmanagment.adapter.taskMVP.TaskPresenter;
 import com.task.square.black.taskmanagment.adapter.taskMVP.TasksFragment;
 import com.task.square.black.taskmanagment.util.ActivityUtil;
@@ -34,9 +26,7 @@ import com.task.square.black.taskmanagment.util.ActivityUtil;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class TaskActivity extends AppCompatActivity {
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";

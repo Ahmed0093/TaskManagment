@@ -1,9 +1,9 @@
 package com.task.square.black.taskmanagment.DB;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 
 @Database(entities = {Task.class,Comment.class}, version = 3)
 public abstract class AppDataBase extends RoomDatabase {

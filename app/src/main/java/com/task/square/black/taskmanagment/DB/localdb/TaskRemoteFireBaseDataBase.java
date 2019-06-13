@@ -1,20 +1,13 @@
 package com.task.square.black.taskmanagment.DB.localdb;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.task.square.black.taskmanagment.DB.Task;
 import com.task.square.black.taskmanagment.DB.TaskDao;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TaskRemoteFireBaseDataBase  implements TasksDataSource {
 

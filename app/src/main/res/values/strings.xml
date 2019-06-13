@@ -7,4 +7,5 @@
     <string name="task_name_hint">Task name</string>
     <string name="tasks_text">Tasks</string>
     <string name="add_task_title">New Task</string>
+    <string name="hello_fragment">hello</string>
 </resources>
