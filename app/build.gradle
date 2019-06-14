@@ -75,14 +75,17 @@ dependencies {
     //---------------------------------
 //    androidTestImplementation 'androidx.test:runner:1.2.0'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-//androidTestImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    //androidTestImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
     //testImplementation 'com.google.truth:truth:0.42'
     //testImplementation 'androidx.test.ext:junit:1.1.1'
 
     //androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     //testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    // TODO: ideally this would only be present in test scope
-    //debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    // TODO: ideally this would only be present in test scope)
+    debugImplementation ('androidx.fragment:fragment-testing:1.1.0-beta01') {
+        exclude group: "androidx.test" , module: "core"
+
+    }
 
     //debugImplementation 'androidx.test:core:'
 
